@@ -6,34 +6,18 @@ using UnityEngine;
 
 namespace AudioController
 {
-	public class AudioLoader : Singleton<AudioLoader>
+	public static class AudioLoader
 	{
+		private static Dictionary<AudioType, AudioClip> audioClips;
 
-#region Fields
-	
-		private Dictionary<AudioType, AudioClip> audioClips;
-
-#endregion
-
-#region Unity Methods
-
-		protected override void Awake()
+		private static void LoadAudioClips()
 		{
-			base.Awake();
-		}
-
-#endregion
-
-#region Methods
-
-		private void LoadAudioClips()
-		{
-			audioClips = new Dictionary<AudioType, AudioClip>();
+			audioClips = new ();
 			AudioClip[] clips = Resources.LoadAll<AudioClip>("Audio");
 
 			foreach (AudioClip clip in clips)
 			{
-				if (Enum.TryParse(clip.name, out AudioType clipName)) // Convierte el nombre del clip al enum
+				if (Enum.TryParse(clip.name, out AudioType clipName)) 
 				{
 					audioClips.Add(clipName, clip);
 				}
@@ -44,12 +28,12 @@ namespace AudioController
 			}
 		}
 
-		public Dictionary<AudioType, AudioClip> GetAudioClips()
+		public static Dictionary<AudioType, AudioClip> GetAudioClips()
 		{
 			return audioClips;
 		}
 
-		public AudioClip GetClip(AudioType clipName)
+		public static AudioClip GetClip(AudioType clipName)
 		{
 			if (audioClips.ContainsKey(clipName))
 			{
@@ -59,8 +43,5 @@ namespace AudioController
 			Debug.LogWarning($"El clip {clipName} no se encuentra cargado.");
 			return null;
 		}
-
-#endregion
-
 	}
 }

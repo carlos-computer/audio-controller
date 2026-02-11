@@ -1,15 +1,11 @@
+using UnityEngine;
+
 
 namespace AudioController
 {
-	public class Audio : Singleton<Audio>
+	public class Audio : MonoBehaviour
 	{
-		public MusicManager musicManager;
-		public SFXManager sfxManager;
-
-		protected override void Awake()
-		{
-			base.Awake();
-		}
+		public IAudioBase musicManager, sfxManager;
 
 		public void PlayMusic(AudioType clipName, bool loop = true)
 		{
